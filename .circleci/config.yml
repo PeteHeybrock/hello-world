@@ -14,7 +14,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - run:
           name: "echo env var from project"
           command: |
-            echo $MY_ENV_VAR # set in project
+            echo Here is the value of MY_ENV_VAR: $MY_ENV_VAR that was set in the project # set in project
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
   print_hello_world: # this is the name of our workflow
