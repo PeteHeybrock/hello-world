@@ -15,7 +15,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
           name: "echo env var from project"
           command: |
             if [ $MY_ENV_VAR = 'Pete' ]; then
-            echo var is Pete
+            echo var is readable
             else
             echo cannot see var
             fi
