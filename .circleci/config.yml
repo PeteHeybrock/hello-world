@@ -1,28 +1,20 @@
 version: 2.1
+commands:
+  print_pipeline_id:
+    description: print pipeline id
+    steps:
+     - run: echo $CIRCLE_WORKFLOW_ID
+
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
-  save_hello_world_output:
+  print_pipeline_id:
     docker: # it uses the docker executor
       - image: circleci/node:13.8.0
     # Steps are a list of commands to run inside the docker container above.
     steps:
-      - run: echo "text to output here" > ~/output.txt
-      - persist_to_workspace:
-          root: ~/
-          paths: 
-            - output.txt
-  print_output_file: # This is our second job.
-    docker: # it runs inside a docker image, the same as above.
-      - image: circleci/node:13.8.0    
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/output.txt
+      - print_pipeline_id
 
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
-  save_then_print: # this is the name of our workflow
+  print_pipeline_id: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+      - print_pipeline_id
