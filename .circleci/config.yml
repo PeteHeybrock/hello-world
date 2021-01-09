@@ -17,7 +17,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
             if [ $MY_ENV_VAR = 'Pete' ]; then
             echo var is Pete
             else
-            echo can't see var
+            echo cannot see var
             fi
             echo Here is the value of MY_ENV_VAR: $MY_ENV_VAR that was set in the project # set in project
 # Under the workflows: map, we can coordinate our two jobs, defined above.
