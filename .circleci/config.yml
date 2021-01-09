@@ -1,30 +1,28 @@
 version: 2.1
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
-  print_hello: # This is our first job.
+  save_hello_world_output:
     docker: # it uses the docker executor
       - image: circleci/node:13.8.0
     # Steps are a list of commands to run inside the docker container above.
     steps:
-      - run: echo "hello" # This prints "hello" to stdout.
-  print_world: # This is our second job.
+      - run: echo "text to output here" > output.txt
+      - persist_to_workspace:
+          root: /data
+          paths: 
+            - output.txt
+  print_output_file: # This is our second job.
     docker: # it runs inside a docker image, the same as above.
       - image: circleci/node:13.8.0    
     steps:
-      - run: echo "world" # We run a similar echo command to above.
-      - run:
-          name: "echo env var from project"
-          command: |
-            if [ $MY_ENV_VAR = 'Pete' ]; then
-            echo var is readable
-            else
-            echo cannot see var
-            fi
-            echo Here is the value of MY_ENV_VAR: $MY_ENV_VAR that was set in the project # set in project
+      - attach_workspace:
+          at: /data
+      - run: cat /data/output.txt
+
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
-  print_hello_world: # this is the name of our workflow
+  save_then_print: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
-      - print_hello
-      - print_world:
+      - save_hello_world_output
+      - print_output_file:
           requires:
-            - print_hello
+            - save_hello_world_output
