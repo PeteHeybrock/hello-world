@@ -11,6 +11,10 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - image: circleci/node:13.8.0    
     steps:
       - run: echo "world" # We run a similar echo command to above.
+      - run:
+          name: "echo env var from project"
+          command: |
+            echo $MY_ENV_VAR # set in project
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
   print_hello_world: # this is the name of our workflow
