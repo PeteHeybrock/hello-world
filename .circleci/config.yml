@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:13.8.0
     # Steps are a list of commands to run inside the docker container above.
     steps:
-      - run: ls
+      - run: ls /blah
       - run:
           name: Something went wrong
           command: echo "earlier step failed"
