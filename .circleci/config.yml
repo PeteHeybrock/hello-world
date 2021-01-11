@@ -1,20 +1,19 @@
 version: 2.1
-commands:
-  print_pipeline_id:
-    description: print pipeline id
-    steps:
-     - run: echo $CIRCLE_WORKFLOW_ID
 
-jobs: # we now have TWO jobs, so that a workflow can coordinate them!
-  print_pipeline_id:
+jobs:
+  my_job:
     docker: # it uses the docker executor
       - image: circleci/node:13.8.0
     # Steps are a list of commands to run inside the docker container above.
     steps:
-      - print_pipeline_id
+      - run: ls
+      - run:
+          name: Something went wrong
+          command: echo "earlier step failed"
+          when: on_fail
 
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
-  print_pipeline_id: # this is the name of our workflow
+  my_workflow: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
-      - print_pipeline_id
+      - my_job
